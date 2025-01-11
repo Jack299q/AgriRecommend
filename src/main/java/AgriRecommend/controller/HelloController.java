@@ -1,4 +1,4 @@
-package AgriRecommend.controller;
+package AgriRecommend.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
     @GetMapping("/try")
-public String f(){
-    return  "this is a try";
-}
+    public String f() {
+        return "this is a try";
+    }
 }
