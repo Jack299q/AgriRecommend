@@ -1,6 +1,6 @@
-package AgriRecommend.Service.implement;
+package AgriRecommend.service.implement;
 
-import AgriRecommend.Service.IUserService;
+import AgriRecommend.service.IUserService;
 import AgriRecommend.mapper.UserMapper;
 import AgriRecommend.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;

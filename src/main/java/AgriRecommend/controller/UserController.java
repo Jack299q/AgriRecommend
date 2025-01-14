@@ -1,6 +1,6 @@
-package AgriRecommend.Controller;
+package AgriRecommend.controller;
 
-import AgriRecommend.Service.IUserService;
+import AgriRecommend.service.IUserService;
 import AgriRecommend.Utils.JwtUtil;
 import AgriRecommend.core.AjaxResult;
 import AgriRecommend.pojo.User;

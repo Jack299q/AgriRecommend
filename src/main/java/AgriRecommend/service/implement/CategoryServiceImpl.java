@@ -1,4 +1,4 @@
-package AgriRecommend.Service.implement;
+package AgriRecommend.service.implement;
 
 import AgriRecommend.domain.Category;
 import AgriRecommend.mapper.CategoryMapper;

@@ -1,4 +1,4 @@
-package AgriRecommend.Service;
+package AgriRecommend.service;
 
 import AgriRecommend.pojo.User;
 
