@@ -19,7 +19,6 @@ public class OrderAndPaymentController {
     private IOrderService iOrderService;
     @PostMapping("/makeNewOrder")
     public AjaxResult makeNewOrder(@RequestParam  Long userId,@RequestParam List<OrderItem> orderItemList){
-
         return AjaxResult.success(iOrderService.makeNewOrder(userId, orderItemList));
     }
     @PostMapping("/makePayment")

@@ -1,6 +1,6 @@
 package AgriRecommend.interceptor;
 
-import AgriRecommend.Utils.JwtUtil;
+import AgriRecommend.utils.JwtUtil;
 import AgriRecommend.core.AjaxResult;
 import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Claims;

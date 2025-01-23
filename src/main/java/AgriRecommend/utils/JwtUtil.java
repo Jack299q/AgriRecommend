@@ -1,4 +1,4 @@
-package AgriRecommend.Utils;
+package AgriRecommend.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

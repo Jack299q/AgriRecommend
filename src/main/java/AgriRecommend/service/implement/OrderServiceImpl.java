@@ -1,7 +1,6 @@
 package AgriRecommend.service.implement;
 
 import AgriRecommend.core.OrderStatus;
-import AgriRecommend.domain.Cart;
 import AgriRecommend.domain.Order;
 import AgriRecommend.domain.OrderItem;
 import AgriRecommend.domain.Payment;
@@ -13,7 +12,6 @@ import cn.hutool.core.util.IdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -28,23 +26,24 @@ public class OrderServiceImpl implements IOrderService {
     private OrderItemMapper orderItemMapper;
     @Autowired
     private PaymentMapper paymentMapper;
+
     @Override
     public Order makeNewOrder(Long userId, List<OrderItem> orderItemList) {
 
-        order=new Order();
-        Date orderDate=new Date();
+        order = new Order();
+        Date orderDate = new Date();
 
-        String ordernum="so-"+ IdUtil.getSnowflakeNextId(); //雪花算法生成订单编号
+        String ordernum = "so-" + IdUtil.getSnowflakeNextId(); //雪花算法生成订单编号
 
-        BigDecimal total=new BigDecimal(0);
-        for (OrderItem orderItem:orderItemList){
-           total= total.add(orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity())));
+        BigDecimal total = new BigDecimal(0);
+        for (OrderItem orderItem : orderItemList) {
+            total = total.add(orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity())));
         }
         order.setUserId(userId);
         order.setCreateTime(orderDate);
         order.setOrderNum(ordernum);
         order.setOrderStatus(OrderStatus.ORDER_RESERVED);
-        System.out.println("总价是"+total);
+        System.out.println("总价是" + total);
         order.setTotal(total);
         orderMapper.insertOrder(order);
 
@@ -57,18 +56,18 @@ public class OrderServiceImpl implements IOrderService {
             orderItemMapper.insertOrderItem(item);
         }
 
-return  order;
+        return order;
     }
 
     @Override
-    public BigDecimal makePayment(Long userId,BigDecimal cashTendered,String paymentMethod) {
-        Payment payment=new Payment();
+    public BigDecimal makePayment(Long userId, BigDecimal cashTendered, String paymentMethod) {
+        Payment payment = new Payment();
         payment.setOrderId(order.getOrderId());
         payment.setTotal(order.getTotal());
         payment.setPaymentMethod(paymentMethod);
         payment.setUserId(userId);
         paymentMapper.insertPayment(payment);
-        BigDecimal changecash=cashTendered.subtract(order.getTotal());
+        BigDecimal changecash = cashTendered.subtract(order.getTotal());
         order.setOrderStatus(OrderStatus.ORDER_PAID);
         order.setPaymentMethod(paymentMethod);
         orderMapper.updateOrder(order);

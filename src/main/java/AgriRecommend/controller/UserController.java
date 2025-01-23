@@ -1,7 +1,7 @@
 package AgriRecommend.controller;
 
 import AgriRecommend.service.IUserService;
-import AgriRecommend.Utils.JwtUtil;
+import AgriRecommend.utils.JwtUtil;
 import AgriRecommend.core.AjaxResult;
 import AgriRecommend.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping("/register")
-    @CrossOrigin
     @Transactional(rollbackFor = Exception.class)
     public AjaxResult register(@RequestBody User user) {
         boolean isExist = userService.checkNameExist(user.getAccount());
@@ -32,7 +31,6 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @CrossOrigin
     public AjaxResult login(@RequestBody User user) {
         User u = userService.checkUser(user);
         if (u == null) return AjaxResult.error("用户名或密码错误!");
@@ -43,8 +41,10 @@ public class UserController {
 
     private String generateJwt(User user) {
         userService.updateUser(user);
+        User u = userService.checkUser(user);
         Map<String, Object> claims = new HashMap<>();
-        claims.put("account", user.getAccount());
+        claims.put("userId", u.getId());
+        claims.put("account", u.getAccount());
         //生成jwt令牌
         return JwtUtil.generateJwt(claims);
     }

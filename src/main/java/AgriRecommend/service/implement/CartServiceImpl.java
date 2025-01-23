@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class CartServiceImpl implements ICartService {
     @Autowired
@@ -21,6 +22,7 @@ public class CartServiceImpl implements ICartService {
     private ProductMapper productMapper;
     @Autowired
     private CategoryMapper categoryMapper;
+
     @Override
     public List<Cart> getCartItems(Long userId) {
         return cartRepository.findByUserId(userId);
@@ -43,27 +45,28 @@ public class CartServiceImpl implements ICartService {
             cartItem.setUserId(userId);
             cartItem.setProductId(productId);
             cartItem.setQuantity(quantity);
-            ProductDescription productDescription=productMapper.selectProductById(productId);
+            ProductDescription productDescription = productMapper.selectProductById(productId);
             cartItem.setProductName(productDescription.getProductName());
-            Category category=categoryMapper.getCategoryById(productDescription.getCategoryId());
+            Category category = categoryMapper.getCategoryById(productDescription.getCategoryId());
             cartItem.setCategoryName(category.getCategoryName());
             cartRepository.save(cartItem); // 保存新商品
         }
     }
-  public  void updateCard(Long userId,Long productId,Integer quantity){
-      // 查询购物车中是否存在该商品
-      Optional<Cart> existingItem = cartRepository.findByUserIdAndProductId(userId, productId);
-if (existingItem.isPresent()){
-   Cart cart= existingItem.get();
-   if(quantity>0){
-       cart.setQuantity(quantity);
-       cartRepository.save(cart);
-   }
-   else {
-       cartRepository.delete(cart);
-   }
-}
+
+    public void updateCard(Long userId, Long productId, Integer quantity) {
+        // 查询购物车中是否存在该商品
+        Optional<Cart> existingItem = cartRepository.findByUserIdAndProductId(userId, productId);
+        if (existingItem.isPresent()) {
+            Cart cart = existingItem.get();
+            if (quantity > 0) {
+                cart.setQuantity(quantity);
+                cartRepository.save(cart);
+            } else {
+                cartRepository.delete(cart);
+            }
+        }
     }
+
     @Override
     public void removeFromCart(Long userId, Long productId) {
 // 查询指定商品
@@ -80,13 +83,13 @@ if (existingItem.isPresent()){
         cartRepository.deleteAll(items);
     }
 
-   public  BigDecimal total(Long userId){
-       List<Cart> items = cartRepository.findByUserId(userId);
-       BigDecimal total=new BigDecimal(0);
-       for(Cart cartitem:items){
-           ProductDescription product=productMapper.selectProductById(cartitem.getProductId());
-         total=  total.add(product.getPrice().multiply(new BigDecimal(cartitem.getQuantity())));
-       }
-       return total;
-   }
+    public BigDecimal total(Long userId) {
+        List<Cart> items = cartRepository.findByUserId(userId);
+        BigDecimal total = new BigDecimal(0);
+        for (Cart cartitem : items) {
+            ProductDescription product = productMapper.selectProductById(cartitem.getProductId());
+            total = total.add(product.getPrice().multiply(new BigDecimal(cartitem.getQuantity())));
+        }
+        return total;
+    }
 }

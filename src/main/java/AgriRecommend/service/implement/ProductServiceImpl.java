@@ -13,6 +13,7 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private ProductMapper productMapper;
 
+
     public ProductDescription getProductByProductSn(String productSn) {
         return productMapper.getProductByProductSn(productSn);
     }
@@ -60,4 +61,16 @@ public class ProductServiceImpl implements IProductService {
     public int deleteProductById(Long productId) {
         return productMapper.deleteProductById(productId);
     }
+
+
+    /**
+     * 根据id查询产品
+     * @param id 产品id
+     * @return 产品
+     */
+    public ProductDescription getProduct(Long id) {
+        return productMapper.selectProductById(id);
+    }
+
+
 }

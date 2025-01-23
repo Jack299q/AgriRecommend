@@ -1,13 +1,10 @@
 package AgriRecommend.controller;
 
+import AgriRecommend.aop.Log;
 import AgriRecommend.core.AjaxResult;
-import AgriRecommend.domain.Cart;
 import AgriRecommend.service.ICartService;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
@@ -28,12 +25,15 @@ public class CartController {
             return AjaxResult.error("获取购物车失败：" + e.getMessage());
         }
     }
+
     @GetMapping("/total/{userId}")
     public AjaxResult gettotal(@PathVariable("userId") Long userId){
         return  AjaxResult.success(cartService.total(userId));
     }
+
     @PostMapping("/add")
-    public AjaxResult add(@RequestParam Long userId,@RequestParam Long productId,@RequestParam Integer quantity){
+    @Log
+    public AjaxResult addToCart(@RequestParam Long userId, @RequestParam Long productId, @RequestParam Integer quantity){
         try {
             cartService.addToCart(userId, productId, quantity);
             return AjaxResult.success("Add successfully!");
