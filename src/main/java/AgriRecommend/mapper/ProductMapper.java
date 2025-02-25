@@ -26,4 +26,13 @@ public interface ProductMapper {
 
     @Delete("delete  from agri_product where product_id=#{productId} ")
     public int deleteProductById(Long productId);
+
+    /**
+     * 查询产品列表
+     *
+     * @param productDescription 查询参数
+     * @return 对象集合
+     */
+    @Select("SELECT * FROM agri_product WHERE agri_product.product_name LIKE CONCAT('%', #{query}, '%')")
+    List<ProductDescription> selectProductList(String query);
 }

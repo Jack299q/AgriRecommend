@@ -42,4 +42,5 @@ public interface IProductService {
     int deleteProductById(Long productId);
 
     ProductDescription getProduct(Long id);
+    List<ProductDescription> selectProductList(String query);
 }

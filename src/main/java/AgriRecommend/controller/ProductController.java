@@ -3,11 +3,14 @@ package AgriRecommend.controller;
 import AgriRecommend.aop.Log;
 import AgriRecommend.core.AjaxResult;
 import AgriRecommend.domain.Collect;
+import AgriRecommend.domain.ProductDescription;
 import AgriRecommend.service.ICollectService;
 import AgriRecommend.service.IProductService;
 import AgriRecommend.service.IUploadService;
 import AgriRecommend.utils.JwtUtil;
 import cn.hutool.core.lang.UUID;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,9 +23,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("/product")
 public class ProductController {
     @Autowired
     private IProductService iProductService;
@@ -38,10 +42,20 @@ public class ProductController {
         return AjaxResult.success(iProductService.listAllProduct());
     }
 
+    @GetMapping("/search")
+    public AjaxResult searchProducts(@RequestParam String query) {
+        return AjaxResult.success(iProductService.selectProductList(query));
+    }
+
     @GetMapping("/getProduct/{id}")
     @Log
     public AjaxResult getProduct(@PathVariable("id") Long id) {
         return AjaxResult.success(iProductService.getProduct(id));
+    }
+
+    @PostMapping("/addProduct")
+    public AjaxResult addProduct(@RequestBody ProductDescription productDescription) {
+        return AjaxResult.success(iProductService.insertProduct(productDescription));
     }
 
     @PostMapping("/collectProduct/{id}")
@@ -62,7 +76,7 @@ public class ProductController {
 
     @PostMapping("/uploadPicture")
     public AjaxResult uploadPicture(@RequestParam("image") MultipartFile image, @RequestParam("productId") Long productId) throws IOException {
-        boolean success = iUploadService.upload(image,productId);
+        boolean success = iUploadService.upload(image, productId);
         if (!success) {
             return AjaxResult.error();
         }
@@ -77,7 +91,7 @@ public class ProductController {
         }
         byte[] bytes = new byte[1024];
         try (OutputStream os = response.getOutputStream();
-             FileInputStream fis = new FileInputStream(file)){
+             FileInputStream fis = new FileInputStream(file)) {
             while ((fis.read(bytes)) != -1) {
                 os.write(bytes);
                 os.flush();

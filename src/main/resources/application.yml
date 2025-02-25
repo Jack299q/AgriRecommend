@@ -8,9 +8,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/agirecommend
+    url: jdbc:mysql://localhost:3306/agri
     username: root
-    password: root
+    password: 667293abC
 
   servlet:
     multipart:
