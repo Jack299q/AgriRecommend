@@ -2,6 +2,7 @@ package AgriRecommend.interceptor;
 
 import AgriRecommend.utils.JwtUtil;
 import AgriRecommend.core.AjaxResult;
+import AgriRecommend.utils.UserHolder;
 import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +32,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         //判断token是否有效
         try{
             Claims claims = JwtUtil.parseJwt(jwt);
+            if(claims != null){
+                Long userId = claims.get("userId",Long.class);
+                if(userId != null){
+                    UserHolder.setUser(userId);
+                }
+            }
         }catch (Exception e){
             AjaxResult error = AjaxResult.error("用户未登录");
             String notLogin = JSONObject.toJSONString(error);
