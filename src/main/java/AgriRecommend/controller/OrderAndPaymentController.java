@@ -3,6 +3,7 @@ package AgriRecommend.controller;
 import AgriRecommend.core.AjaxResult;
 import AgriRecommend.domain.OrderItem;
 import AgriRecommend.service.IOrderService;
+import AgriRecommend.utils.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +19,13 @@ public class OrderAndPaymentController {
     @Autowired
     private IOrderService iOrderService;
     @PostMapping("/makeNewOrder")
-    public AjaxResult makeNewOrder(@RequestParam  Long userId,@RequestParam List<OrderItem> orderItemList){
+    public AjaxResult makeNewOrder(@RequestParam List<OrderItem> orderItemList){
+        Long userId = UserHolder.getUser();
         return AjaxResult.success(iOrderService.makeNewOrder(userId, orderItemList));
     }
     @PostMapping("/makePayment")
-    public AjaxResult makePayment(@RequestParam Long userId, @RequestParam BigDecimal cashtendered, @RequestParam String paymentMethod){
+    public AjaxResult makePayment(@RequestParam BigDecimal cashtendered, @RequestParam String paymentMethod){
+        Long userId = UserHolder.getUser();
         return AjaxResult.success(iOrderService.makePayment(userId, cashtendered, paymentMethod));
     }
 

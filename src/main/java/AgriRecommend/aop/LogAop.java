@@ -68,8 +68,8 @@ public class LogAop {
                 userLog.setOpType(2);
             }
         }else if(methodName.equals("addToCart")){
-            if(args[1] instanceof Long){
-                userLog.setProductId((Long) args[1]);
+            if(args[0] instanceof Long){
+                userLog.setProductId((Long) args[0]);
                 userLog.setOpType(3);
             }
         }

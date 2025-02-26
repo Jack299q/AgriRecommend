@@ -8,6 +8,7 @@ import AgriRecommend.service.ICollectService;
 import AgriRecommend.service.IProductService;
 import AgriRecommend.service.IUploadService;
 import AgriRecommend.utils.JwtUtil;
+import AgriRecommend.utils.UserHolder;
 import cn.hutool.core.lang.UUID;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -60,13 +62,12 @@ public class ProductController {
 
     @PostMapping("/collectProduct/{id}")
     @Log
-    public AjaxResult collectProduct(@PathVariable("id") Long id, HttpServletRequest request) {
-        String jwt = request.getHeader("token");
-        Claims claims = JwtUtil.parseJwt(jwt);
-        Long userId = (Long) claims.get("userId");
+    public AjaxResult collectProduct(@PathVariable("id") Long id) {
+        Long userId = UserHolder.getUser();
         Collect collect = new Collect();
         collect.setUserId(userId);
         collect.setProductId(id);
+        collect.setCollectTime(LocalDateTime.now());
         boolean success = iCollectService.collect(collect);
         if (success) {
             return AjaxResult.success();

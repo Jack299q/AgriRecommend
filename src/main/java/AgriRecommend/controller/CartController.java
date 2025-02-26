@@ -3,6 +3,7 @@ package AgriRecommend.controller;
 import AgriRecommend.aop.Log;
 import AgriRecommend.core.AjaxResult;
 import AgriRecommend.service.ICartService;
+import AgriRecommend.utils.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +15,11 @@ public class CartController {
 
     /**
      * 获取购物车中的商品列表
-     * @param userId 用户 ID
      * @return 购物车商品列表
      */
-    @GetMapping("/{userId}")
-    public AjaxResult getCartItems(@PathVariable("userId") Long userId) {
+    @GetMapping("/get")
+    public AjaxResult getCartItems() {
+        Long userId = UserHolder.getUser();
         try {
             return AjaxResult.success(cartService.getCartItems(userId));
         } catch (Exception e) {
@@ -26,15 +27,17 @@ public class CartController {
         }
     }
 
-    @GetMapping("/total/{userId}")
-    public AjaxResult gettotal(@PathVariable("userId") Long userId){
+    @GetMapping("/total")
+    public AjaxResult gettotal(){
+        Long userId = UserHolder.getUser();
         return  AjaxResult.success(cartService.total(userId));
     }
 
     @PostMapping("/add")
     @Log
-    public AjaxResult addToCart(@RequestParam Long userId, @RequestParam Long productId, @RequestParam Integer quantity){
+    public AjaxResult addToCart( @RequestParam Long productId, @RequestParam Integer quantity){
         try {
+            Long userId = UserHolder.getUser();
             cartService.addToCart(userId, productId, quantity);
             return AjaxResult.success("Add successfully!");
         } catch (Exception e) {
@@ -43,8 +46,9 @@ public class CartController {
     }
 
     @PostMapping("/edit")
-    public AjaxResult edit(@RequestParam Long userId,@RequestParam Long productId,@RequestParam Integer quantity){
+    public AjaxResult edit(@RequestParam Long productId,@RequestParam Integer quantity){
         try {
+            Long userId = UserHolder.getUser();
             cartService.updateCard(userId, productId, quantity);
             return AjaxResult.success("edit successfully!");
         } catch (Exception e) {
@@ -53,13 +57,15 @@ public class CartController {
     }
 
     @PostMapping("/remove")
-    public AjaxResult remove(@RequestParam Long userId,@RequestParam Long productId){
+    public AjaxResult remove(@RequestParam Long productId){
+        Long userId = UserHolder.getUser();
         cartService.removeFromCart(userId, productId);
         return  AjaxResult.success("从购物车删除成功");
     }
 
-    @GetMapping("/clear/{userId}")
-    public AjaxResult clear(@PathVariable("userId") Long userId){
+    @DeleteMapping("/clear")
+    public AjaxResult clear(){
+        Long userId = UserHolder.getUser();
         cartService.clearCart(userId);
         return AjaxResult.success("清空购物车成功！");
     }
