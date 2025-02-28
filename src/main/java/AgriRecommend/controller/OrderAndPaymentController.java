@@ -5,10 +5,7 @@ import AgriRecommend.domain.OrderItem;
 import AgriRecommend.service.IOrderService;
 import AgriRecommend.utils.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,14 +16,24 @@ public class OrderAndPaymentController {
     @Autowired
     private IOrderService iOrderService;
     @PostMapping("/makeNewOrder")
-    public AjaxResult makeNewOrder(@RequestParam List<OrderItem> orderItemList){
+    public AjaxResult makeNewOrder(@RequestBody List<OrderItem> orderItemList){
         Long userId = UserHolder.getUser();
         return AjaxResult.success(iOrderService.makeNewOrder(userId, orderItemList));
     }
-    @PostMapping("/makePayment")
-    public AjaxResult makePayment(@RequestParam BigDecimal cashtendered, @RequestParam String paymentMethod){
-        Long userId = UserHolder.getUser();
-        return AjaxResult.success(iOrderService.makePayment(userId, cashtendered, paymentMethod));
-    }
 
+    @PostMapping("/makePayment")
+    public AjaxResult makePayment(@RequestParam String cashtendered, @RequestParam String paymentMethod,@RequestParam String orderNUm){
+        Long userId = UserHolder.getUser();
+        return AjaxResult.success(iOrderService.makePayment(userId, new BigDecimal(cashtendered), paymentMethod,orderNUm));
+    }
+    @GetMapping("/listAllOrder")
+    public AjaxResult listAllOrder(){
+        Long userId = UserHolder.getUser();
+        return AjaxResult.success(iOrderService.listAllOrder(userId));
+    }
+    @GetMapping("/selectOrderByStatus")
+    public AjaxResult selectOrderByStatus(@RequestParam String status){
+        Long userId = UserHolder.getUser();
+        return AjaxResult.success(iOrderService.selectOrderByStatus(userId,status));
+    }
 }

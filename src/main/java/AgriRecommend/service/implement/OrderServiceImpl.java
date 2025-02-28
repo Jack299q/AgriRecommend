@@ -60,17 +60,28 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public BigDecimal makePayment(Long userId, BigDecimal cashTendered, String paymentMethod) {
+    public BigDecimal makePayment(Long userId, BigDecimal cashTendered, String paymentMethod,String orderNUm) {
+        Order order1=new Order();
+        order1=orderMapper.selectOrderBynum(orderNUm);
         Payment payment = new Payment();
-        payment.setOrderId(order.getOrderId());
-        payment.setTotal(order.getTotal());
+        payment.setOrderId(order1.getOrderId());
+        payment.setTotal(order1.getTotal());
         payment.setPaymentMethod(paymentMethod);
         payment.setUserId(userId);
         paymentMapper.insertPayment(payment);
-        BigDecimal changecash = cashTendered.subtract(order.getTotal());
-        order.setOrderStatus(OrderStatus.ORDER_PAID);
-        order.setPaymentMethod(paymentMethod);
-        orderMapper.updateOrder(order);
+        BigDecimal changecash = cashTendered.subtract(order1.getTotal());
+        order1.setOrderStatus(OrderStatus.ORDER_PAID);
+        order1.setPaymentMethod(paymentMethod);
+        orderMapper.updateOrder(order1,order1.getOrderId());
         return changecash;
+    }
+
+    @Override
+    public List<Order> listAllOrder(Long userId) {
+
+        return orderMapper.listAllOrder( userId);
+    }
+    public List<Order> selectOrderByStatus(Long userId,String status){
+        return orderMapper.selectOrderByStatus(userId,status);
     }
 }
