@@ -57,7 +57,8 @@ public class ProductController {
 
     @PostMapping("/addProduct")
     public AjaxResult addProduct(@RequestBody ProductDescription productDescription) {
-        return AjaxResult.success(iProductService.insertProduct(productDescription));
+        iProductService.insertProduct(productDescription);
+        return AjaxResult.success(productDescription.getProductId());
     }
 
     @PostMapping("/collectProduct/{id}")
@@ -75,8 +76,17 @@ public class ProductController {
         return AjaxResult.error();
     }
 
+    @PostMapping("/editProduct")
+    public AjaxResult editProduct(@RequestBody ProductDescription productDescription) {
+        iProductService.updateProduct(productDescription);
+        return AjaxResult.success();
+    }
+
     @PostMapping("/uploadPicture")
     public AjaxResult uploadPicture(@RequestParam("image") MultipartFile image, @RequestParam("productId") Long productId) throws IOException {
+        //删除原有图片
+        iUploadService.delete(productId);
+
         boolean success = iUploadService.upload(image, productId);
         if (!success) {
             return AjaxResult.error();

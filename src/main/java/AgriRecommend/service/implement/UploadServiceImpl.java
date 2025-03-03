@@ -61,4 +61,17 @@ public class UploadServiceImpl implements IUploadService {
         }
         return new File(productImages.get(0).getPath());
     }
+
+    @Override
+    public boolean delete(Long productId) {
+        List<ProductImage> productImages = imageMapper.selectImageByProductId(productId);
+        if(productImages==null||productImages.isEmpty()){
+            return false;
+        }
+        //删除本地文件
+        File file = new File(productImages.get(0).getPath());
+        if(file.exists())file.delete();
+        imageMapper.deleteImageByProductId(productId);
+        return true;
+    }
 }

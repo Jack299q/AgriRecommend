@@ -1,6 +1,7 @@
 package AgriRecommend.mapper;
 
 import AgriRecommend.domain.ProductImage;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -16,4 +17,7 @@ public interface ImageMapper {
 
     @Select("SELECT * FROM image_path WHERE product_id = #{productId}")
     public List<ProductImage> selectImageByProductId(Long productId);
+
+    @Delete("DELETE FROM image_path WHERE product_id = #{productId}")
+    public void deleteImageByProductId(Long productId);
 }

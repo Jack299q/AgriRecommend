@@ -10,4 +10,6 @@ public interface IUploadService {
     boolean upload(MultipartFile file,Long productId) throws IOException;
 
     File download(Long productId) throws IOException;
+
+    boolean delete(Long productId);
 }

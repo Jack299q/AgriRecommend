@@ -18,6 +18,7 @@ public interface ProductMapper {
 
     @Insert("insert into agri_product( product_sn, product_name, price, stock, description, category_id) " +
             "values (#{productSn} ,#{productName},#{price} ,#{stock},#{description} ,#{categoryId}  )")
+    @Options(useGeneratedKeys = true, keyProperty = "productId",keyColumn = "product_id")
     public int insertProduct(ProductDescription productDescription);
 
     @Update("update agri_product set product_sn=#{productSn} ,product_name=#{productName} ,price=#{price} ,stock=#{stock} ,description=#{description} " +

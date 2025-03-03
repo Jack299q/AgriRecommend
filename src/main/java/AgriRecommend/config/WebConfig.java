@@ -20,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> excludePath = new ArrayList<String>();
         excludePath.add("/user/**");
-
+        excludePath.add("/product/downloadPicture/*");
         excludePath.add("/product/getProduct/**");
         excludePath.add("/product/listAllProduct");
         registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns(excludePath);
