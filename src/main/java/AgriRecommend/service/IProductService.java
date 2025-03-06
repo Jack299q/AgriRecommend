@@ -1,6 +1,8 @@
 package AgriRecommend.service;
 
 import AgriRecommend.domain.ProductDescription;
+import AgriRecommend.domain.Recommend;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -8,6 +10,7 @@ public interface IProductService {
     ProductDescription getProductByProductSn(String productSn);
 
     List<ProductDescription> listAllProduct();
+    List<Recommend> selectRecommendationsByUserId(@Param("userId") Long userId);
 
     /**
      * 查询单个产品

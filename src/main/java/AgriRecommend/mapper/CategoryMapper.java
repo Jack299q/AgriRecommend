@@ -9,7 +9,7 @@ import java.util.List;
 public interface CategoryMapper {
     @Select("SELECT category_id,category_name FROM agri_category where category_id=#{categoryId}")
     Category getCategoryById(Long categoryId);
-    @Select("SELECT category_id,category_name FROM agri_category")
+    @Select("SELECT * FROM agri_category")
     List<Category> listAllCategory();
     @Insert("INSERT into agri_category(category_name) values (#{categoryName} )")
     int insertCategory(Category category);

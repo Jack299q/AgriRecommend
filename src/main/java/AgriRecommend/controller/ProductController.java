@@ -4,6 +4,7 @@ import AgriRecommend.aop.Log;
 import AgriRecommend.core.AjaxResult;
 import AgriRecommend.domain.Collect;
 import AgriRecommend.domain.ProductDescription;
+import AgriRecommend.service.ICategoryService;
 import AgriRecommend.service.ICollectService;
 import AgriRecommend.service.IProductService;
 import AgriRecommend.service.IUploadService;
@@ -33,6 +34,7 @@ public class ProductController {
     @Autowired
     private IProductService iProductService;
 
+
     @Autowired
     private ICollectService iCollectService;
 
@@ -40,8 +42,21 @@ public class ProductController {
     private IUploadService iUploadService;
 
     @GetMapping("/listAllProduct")
-    public AjaxResult listall() {
-        return AjaxResult.success(iProductService.listAllProduct());
+    public AjaxResult listall(@RequestParam("pageNum") Integer pageNum,@RequestParam("pageSize") Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<ProductDescription> list=iProductService.listAllProduct();
+        PageInfo<List> pageInfo=new PageInfo(list);
+        return AjaxResult.success(pageInfo);
+    }
+    @GetMapping("/listAllProduct2")
+    public AjaxResult listproduct(){
+            return AjaxResult.success(iProductService.listAllProduct());
+    }
+
+    @GetMapping("/getRecommandation")
+    public AjaxResult getRecommandation(){
+        Long userId = UserHolder.getUser();
+        return AjaxResult.success(iProductService.selectRecommendationsByUserId(userId));
     }
 
     @GetMapping("/search")

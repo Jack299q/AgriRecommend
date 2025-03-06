@@ -1,9 +1,11 @@
 package AgriRecommend.service.implement;
 
 import AgriRecommend.domain.ProductDescription;
+import AgriRecommend.domain.Recommend;
 import AgriRecommend.mapper.ProductMapper;
 import AgriRecommend.service.IProductService;
 import ch.qos.logback.core.util.StringUtil;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,9 @@ public class ProductServiceImpl implements IProductService {
     public List<ProductDescription> listAllProduct() {
         return productMapper.listAllProduct();
     }
-
+    public List<Recommend> selectRecommendationsByUserId(@Param("userId") Long userId){
+        return productMapper.selectRecommendationsByUserId(userId);
+    }
     /**
      * 查询单个产品
      *
