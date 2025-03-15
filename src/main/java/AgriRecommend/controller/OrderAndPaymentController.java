@@ -15,6 +15,7 @@ import java.util.List;
 public class OrderAndPaymentController {
     @Autowired
     private IOrderService iOrderService;
+
     @PostMapping("/makeNewOrder")
     public AjaxResult makeNewOrder(@RequestBody List<OrderItem> orderItemList){
         Long userId = UserHolder.getUser();
@@ -35,5 +36,9 @@ public class OrderAndPaymentController {
     public AjaxResult selectOrderByStatus(@RequestParam String status){
         Long userId = UserHolder.getUser();
         return AjaxResult.success(iOrderService.selectOrderByStatus(userId,status));
+    }
+    @GetMapping("/orderitem")
+    public AjaxResult orderitem(@RequestParam Long orderId){
+        return AjaxResult.success(iOrderService.selectorderitem(orderId));
     }
 }

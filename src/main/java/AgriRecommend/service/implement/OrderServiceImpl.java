@@ -84,4 +84,8 @@ public class OrderServiceImpl implements IOrderService {
     public List<Order> selectOrderByStatus(Long userId,String status){
         return orderMapper.selectOrderByStatus(userId,status);
     }
+
+    public List<OrderItem> selectorderitem(Long orderId){
+      return   orderItemMapper.selectorderitem(orderId);
+    }
 }

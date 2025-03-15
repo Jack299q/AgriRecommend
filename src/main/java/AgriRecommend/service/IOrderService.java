@@ -12,4 +12,5 @@ public interface IOrderService {
     BigDecimal makePayment(Long userId,BigDecimal cashTendered,String paymentMethod,String orderNUm);
     public List<Order> listAllOrder(Long userId);
     public List<Order> selectOrderByStatus(Long userId,String status);
+    public List<OrderItem> selectorderitem(Long orderId);
 }

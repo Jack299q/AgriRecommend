@@ -16,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.*;
@@ -89,6 +90,16 @@ public class ProductController {
             return AjaxResult.success();
         }
         return AjaxResult.error();
+    }
+    @GetMapping("/collectdata")
+    public AjaxResult collectdata(){
+        Long userId = UserHolder.getUser();
+        return AjaxResult.success(iCollectService.listCollecrData(userId));
+    }
+    @DeleteMapping("/removecollect")
+    public AjaxResult removecollect(@RequestParam Long productId){
+        Long userId = UserHolder.getUser();
+     return AjaxResult.success(iCollectService.remove(userId,productId));
     }
 
     @PostMapping("/editProduct")
