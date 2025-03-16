@@ -45,6 +45,7 @@ public class UserController {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", u.getId());
         claims.put("account", u.getAccount());
+        claims.put("roleType",u.getType());
         //生成jwt令牌
         return JwtUtil.generateJwt(claims);
     }
